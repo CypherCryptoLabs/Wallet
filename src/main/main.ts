@@ -34,7 +34,7 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.handle("file-exists", (event, file) => {
+ipcMain.handle("file-exists", (_event, file) => {
   /*const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(file));
   event.reply('file-exits', msgTemplate('pong'));*/
