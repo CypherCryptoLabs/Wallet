@@ -16,13 +16,8 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 const fs = require("fs")
 
-/*ipcMain.on("file-read", (event, file) => {
-  return fs.readFileSync(app.getPath("appData") + "/cypher-wallet/" + file).toString("utf-8");
-})
-
-ipcMain.on("file-write", (event, file, data) => {
-  return fs.writeFileSync(app.getPath("appData") + "/cypher-wallet/" + file, data);
-})*/
+const Wallet = require("./classes/wallet");
+const wallet = new Wallet();
 
 class AppUpdater {
   constructor() {
@@ -34,12 +29,9 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.handle("file-exists", (_event, file) => {
-  /*const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(file));
-  event.reply('file-exits', msgTemplate('pong'));*/
-  
-  return fs.existsSync(app.getPath("appData") + "/cypher-wallet/" + file)
+ipcMain.handle("get-balance", (_event, file) => {  
+  //return fs.existsSync(app.getPath("appData") + "/cypher-wallet/" + file)
+  return wallet.data.balance;
 })
 
 ipcMain.on('ipc-example', async (event, arg) => {

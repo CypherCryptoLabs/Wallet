@@ -9,7 +9,8 @@ export class Overview extends React.Component {
     }
 
     async componentDidMount() {
-        this.setState({balance: await window.electron.ipcRenderer.test("wallet-cache.json")});
+        console.log(await window.electron.ipcRenderer.getBalance())
+        this.setState({balance: await window.electron.ipcRenderer.getBalance()});
     }
 
     render() {

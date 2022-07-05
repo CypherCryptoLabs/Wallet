@@ -15,8 +15,8 @@ contextBridge.exposeInMainWorld('electron', {
     once(channel: string, func: (...args: unknown[]) => void) {
       ipcRenderer.once(channel, (_event, ...args) => func(...args));
     },
-    test(file:string) {
-      return Promise.resolve(ipcRenderer.invoke("file-exists", file));
+    getBalance() {
+      return Promise.resolve(ipcRenderer.invoke("get-balance"));
     }
   },
 });
