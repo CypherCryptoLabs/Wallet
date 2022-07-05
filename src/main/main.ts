@@ -14,7 +14,6 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-const fs = require("fs")
 
 const Wallet = require("./classes/wallet");
 const wallet = new Wallet();
@@ -29,12 +28,12 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.handle("get-balance", (_event, file) => {  
+ipcMain.handle("get-balance", (_event, _) => {  
   //return fs.existsSync(app.getPath("appData") + "/cypher-wallet/" + file)
   return wallet.data.balance;
 })
 
-ipcMain.handle("get-blockchain-address", (_event, file) => {
+ipcMain.handle("get-blockchain-address", (_event, _) => {
   return wallet.data.blockchainAddress;
 })
 
