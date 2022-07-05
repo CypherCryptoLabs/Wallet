@@ -20,6 +20,9 @@ contextBridge.exposeInMainWorld('electron', {
     },
     getBlockchainAddress() {
       return Promise.resolve(ipcRenderer.invoke("get-blockchain-address"));
+    },
+    sendTransaction(data: (string|number|number)[]) {
+      return Promise.resolve(ipcRenderer.invoke("send-transaction", data));
     }
   },
 });

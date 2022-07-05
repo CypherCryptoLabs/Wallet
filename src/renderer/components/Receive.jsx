@@ -15,6 +15,7 @@ export class Receive extends React.Component {
     render() {
         return (
           <div>
+            <h1>Receive Cypher</h1>
             <Link to="../">Back</Link>
             <input value={this.state.address} readOnly></input>
           </div>

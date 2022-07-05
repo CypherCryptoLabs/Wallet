@@ -38,6 +38,10 @@ ipcMain.handle("get-blockchain-address", (_event, file) => {
   return wallet.data.blockchainAddress;
 })
 
+ipcMain.handle("send-transaction", (_event, data) => {
+  return true;
+})
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
