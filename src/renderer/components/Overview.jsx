@@ -9,7 +9,6 @@ export class Overview extends React.Component {
     }
 
     async componentDidMount() {
-        console.log(await window.electron.ipcRenderer.getBalance())
         this.setState({balance: await window.electron.ipcRenderer.getBalance()});
     }
 
