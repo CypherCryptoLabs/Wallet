@@ -35,7 +35,6 @@ ipcMain.handle("get-balance", (_event, file) => {
 })
 
 ipcMain.handle("get-blockchain-address", (_event, file) => {
-  console.log(wallet.data.blockchainAddress);
   return wallet.data.blockchainAddress;
 })
 
