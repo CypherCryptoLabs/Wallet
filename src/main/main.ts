@@ -34,6 +34,11 @@ ipcMain.handle("get-balance", (_event, file) => {
   return wallet.data.balance;
 })
 
+ipcMain.handle("get-blockchain-address", (_event, file) => {
+  console.log(wallet.data.blockchainAddress);
+  return wallet.data.blockchainAddress;
+})
+
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));

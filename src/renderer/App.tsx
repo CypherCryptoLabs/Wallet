@@ -1,7 +1,7 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { Overview } from './components/Overview.jsx'
-import Receive from './components/Receive';
+import { Receive } from './components/Receive';
 import Send from './components/Send';
 
 export default function App() {

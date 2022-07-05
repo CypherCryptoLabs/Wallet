@@ -17,6 +17,9 @@ contextBridge.exposeInMainWorld('electron', {
     },
     getBalance() {
       return Promise.resolve(ipcRenderer.invoke("get-balance"));
+    },
+    getBlockchainAddress() {
+      return Promise.resolve(ipcRenderer.invoke("get-blockchain-address"));
     }
   },
 });
