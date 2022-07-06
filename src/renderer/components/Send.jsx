@@ -21,7 +21,6 @@ export class Send extends React.Component {
 
     async sendTransaction() {
       this.setState({transactionSuccess:await window.electron.ipcRenderer.sendTransaction([this.state.receiver, this.state.amount, this.state.networkFee])})
-      console.log(this.state)
     }
 
     render() {

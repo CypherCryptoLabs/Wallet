@@ -2,22 +2,23 @@ const fs = require("fs");
 const {app} = require("electron");
 const { formatWithCursor } = require("prettier");
 const Crypto = require("./crypto");
-var crypto;
 
 class Wallet {
     constructor() {
         this._data = {};
         this.loadWalletData();
+        this.crypto;
     }
 
     loadWalletData() {
         try {
             if(!fs.existsSync(app.getPath("appData") + "/cypher-wallet/wallet.json")) {
-                crypto = new Crypto();
-                this.data = {balance:0, blockHeight: -1, transactions:[], privateKey: crypto.privateKey, blockchainAddress: crypto.blockchainAddress};
+                this.crypto = new Crypto();
+                this.data = {balance:0, blockHeight: -1, transactions:[], privateKey: this.crypto.privateKey, blockchainAddress: this.crypto.blockchainAddress};
             } else {
                 this._data = JSON.parse(fs.readFileSync(app.getPath("appData") + "/cypher-wallet/wallet.json").toString("utf8"));
-                crypto = new Crypto(this._data.privateKey);
+                console.log(this._data)
+                this.crypto = new Crypto(this._data.privateKey);
             }
         } catch (error) {
             console.log(error)

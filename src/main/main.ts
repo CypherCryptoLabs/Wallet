@@ -15,8 +15,10 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
-const Wallet = require("./classes/wallet");
+const Wallet = require('./classes/wallet');
 const wallet = new Wallet();
+const Networking = require('./classes/networking');
+const networking = new Networking('192.168.178.39', 1234, wallet);
 
 class AppUpdater {
   constructor() {
@@ -28,18 +30,18 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.handle("get-balance", (_event, _) => {  
+ipcMain.handle('get-balance', (_event, _) => {
   //return fs.existsSync(app.getPath("appData") + "/cypher-wallet/" + file)
   return wallet.data.balance;
-})
+});
 
-ipcMain.handle("get-blockchain-address", (_event, _) => {
+ipcMain.handle('get-blockchain-address', (_event, _) => {
   return wallet.data.blockchainAddress;
-})
+});
 
-ipcMain.handle("send-transaction", (_event, data) => {
-  return true;
-})
+ipcMain.handle('send-transaction', async (_event, data) => {
+  return await networking.sendTransaction(data[0], data[1], data[2]);
+});
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
