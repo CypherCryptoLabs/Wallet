@@ -43,6 +43,11 @@ ipcMain.handle('send-transaction', async (_event, data) => {
   return await networking.sendTransaction(data[0], data[1], data[2]);
 });
 
+ipcMain.handle("sync-to-network", async (_event, _arg) => {
+  await networking.syncBlockchain();
+  return;
+})
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();

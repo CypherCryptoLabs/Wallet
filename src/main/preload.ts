@@ -23,6 +23,9 @@ contextBridge.exposeInMainWorld('electron', {
     },
     sendTransaction(data: (string|number|number)[]) {
       return Promise.resolve(ipcRenderer.invoke("send-transaction", data));
+    },
+    syncToNetwork() {
+      return Promise.resolve(ipcRenderer.invoke("sync-to-network"));
     }
   },
 });

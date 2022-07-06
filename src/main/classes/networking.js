@@ -8,7 +8,6 @@ class Networking {
   }
 
   async sendTransaction(receiverAddress, amount, networkFee) {
-    console.log(this.wallet.crypto.blockchainAddress)
     let payload = {
       blockchainSenderAddress: this.wallet.crypto.blockchainAddress,
       blockchainReceiverAddress: receiverAddress,
@@ -19,6 +18,63 @@ class Networking {
     let packet = this.createPacket(1, payload);
     console.log(packet);
     return JSON.parse(await this.sendPacket(packet, this.nodeAddress, this.nodePort)).payload.status;
+  }
+
+  async syncBlockchain() {
+    let payload = {
+        type:"request",
+        blockHeight:(this.wallet.data.blockHeight == -1) ? 0 : this.wallet.data.blockHeight
+    };
+
+    let packet = this.createPacket(5, payload)
+    let blockchainUpdate = JSON.parse(await this.sendPacket(packet, this.nodeAddress, this.nodePort));
+    let localBlockchainAddress = this.wallet.crypto.blockchainAddress;
+
+    for(i in blockchainUpdate.payload.blocks) {
+        let block = blockchainUpdate.payload.blocks[i];
+        if(this.wallet.data.blockHeight + 1 == block.id) {
+            console.log()
+            this.wallet.data.blockHeight = block.id
+            if(block.rewardAddress == localBlockchainAddress) {
+                this.wallet.data.balance += block.rewardAmount;
+                this.wallet.data.transactions.push({unixTimestamp:block.timestamp, payload:{blockchainSenderAddress:"rewards", blockchainReceiverAddress:localBlockchainAddress, unitsToTransfer:block.rewardAmount, networkFee:0}, publicKey:"", signature:""})
+            }
+
+            for(var j in block.payload) {
+                let transaction = block.payload[j];
+
+                if(transaction.payload.blockchainSenderAddress == localBlockchainAddress) {
+                    this.wallet.data.balance -= transaction.payload.unitsToTransfer + transaction.payload.networkFee;
+                }
+
+                if(transaction.payload.blockchainReceiverAddress == localBlockchainAddress) {
+                    this.wallet.data.balance += transaction.payload.unitsToTransfer;
+                }
+            }
+
+            if(block.validators) {
+                let validators = Object.keys(block.validators);
+                let localBlockchainAddressValidatorIndex = validators.indexOf(localBlockchainAddress);
+
+                if(localBlockchainAddressValidatorIndex != -1 && block.validators[localBlockchainAddress] == "") {
+                    this.wallet.data.balance -= 15;
+                    this.wallet.data.transactions.push({unixTimestamp:block.timestamp, payload:{blockchainSenderAddress:"penalty", blockchainReceiverAddress:localBlockchainAddress, unitsToTransfer:-15, networkFee:0}, publicKey:"", signature:""})
+                }
+
+                for(var j in block.networkDiff.left) {
+                    let node = block.networkDiff.left[j];
+                    if(node.blockchainAddress == localBlockchainAddress) {
+                        this.wallet.data.balance -= 1;
+                        this.wallet.data.transactions.push({unixTimestamp:block.timestamp, payload:{blockchainSenderAddress:"penalty", blockchainReceiverAddress:localBlockchainAddress, unitsToTransfer:-1, networkFee:0}, publicKey:"", signature:""})
+
+                    }
+                }
+            }
+            
+            this.wallet.data = this.wallet.data;
+        }
+    }
+    return
   }
 
   createPacket(queryID, payload) {
