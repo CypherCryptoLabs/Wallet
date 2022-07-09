@@ -25,9 +25,9 @@ export class Send extends React.Component {
 
     render() {
         return (
-          <div>
-            <h1>Send Cypher</h1>
-            <Link to="../"> Back</Link>
+          <div className='bg-black min-h-screen min-w-screen text-white font-black'>
+            <Link to="../" className='text-xl bg-secondary px-3 py-2 rounded-xl w-40 text-center hover:scale-110 duration-300 mt-4'>Back</Link>
+            <h1 className='text-4xl text-gradient m-auto pt-4'>Send Cypher</h1>
 
             {this.state.transactionSuccess === true &&
               <p>Successfully sent</p>

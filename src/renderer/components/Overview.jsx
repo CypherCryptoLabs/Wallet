@@ -20,13 +20,16 @@ export class Overview extends React.Component {
     }
 
     render() {
+      //<button onClick={this.syncToNetwork}>Sync to Network</button>
+
         return (
-            <div>
-              <h1>Balance:</h1>
-              <h2>{this.state.balance} Cypher</h2>
-              <Link to="/receive">Receive</Link>
-              <Link to="/send">Send</Link><br />
-              <button onClick={this.syncToNetwork}>Sync to Network</button>
+          <div className='bg-black min-h-screen min-w-screen text-white font-black'>
+              <h1 className='text-4xl text-gradient m-auto pt-10'>Balance:</h1>
+              <h2 className='m-auto text-2xl'>{this.state.balance} Cypher</h2>
+              <div className='m-auto flex flex-wrapt space-x-10 mt-10'>
+                <Link to="/receive" className='text-xl bg-secondary px-3 py-2 rounded-xl w-40 text-center hover:scale-110 duration-300'>Receive</Link>
+                <Link to="/send" className='text-xl bg-secondary px-3 py-2 rounded-xl w-40 text-center hover:scale-110 duration-300'>Send</Link><br />
+              </div>
             </div>
           );
     }
