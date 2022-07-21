@@ -13,7 +13,8 @@ export class Overview extends React.Component {
     }
 
     async componentDidMount() {
-        this.syncToNetwork()
+        await this.syncToNetwork()
+        console.log(await window.electron.ipcRenderer.getTransactionHistory())
         //this.setState({balance: await window.electron.ipcRenderer.getBalance()});
     }
 

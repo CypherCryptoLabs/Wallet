@@ -26,6 +26,9 @@ contextBridge.exposeInMainWorld('electron', {
     },
     syncToNetwork() {
       return Promise.resolve(ipcRenderer.invoke("sync-to-network"));
+    },
+    getTransactionHistory() {
+      return Promise.resolve(ipcRenderer.invoke("get-transaction-history"));
     }
   },
 });

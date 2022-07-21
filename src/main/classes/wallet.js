@@ -25,6 +25,10 @@ class Wallet {
         }
     }
 
+    get transactionHistory() {
+        return this.data.transactions;
+    }
+
     get data() {
         return this._data
     }
