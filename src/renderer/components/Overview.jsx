@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { Link } from 'react-router-dom';
+import { TransactionHistory } from './TransactionHistory.jsx'
 
 export class Overview extends React.Component {
     constructor(props) {
@@ -13,7 +14,7 @@ export class Overview extends React.Component {
     }
 
     async componentDidMount() {
-        this.syncToNetwork()
+        await this.syncToNetwork()
         //this.setState({balance: await window.electron.ipcRenderer.getBalance()});
     }
 
@@ -42,7 +43,8 @@ export class Overview extends React.Component {
               this.state.error == true &&
               <p className='text-center mt-4 border-2 border-red-800 rounded-xl w-9/12 m-auto bg-red-800/20'>Your wallet could not be synced!</p>
             }
+            <TransactionHistory></TransactionHistory>
           </div>
-          );
+        );
     }
 }

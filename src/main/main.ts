@@ -48,6 +48,10 @@ ipcMain.handle("sync-to-network", async (_event, _arg) => {
   return;
 })
 
+ipcMain.handle("get-transaction-history", async (_event, _arg) => {
+  return wallet.transactionHistory;
+})
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();

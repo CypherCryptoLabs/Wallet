@@ -45,10 +45,12 @@ class Networking {
 
                 if(transaction.payload.blockchainSenderAddress == localBlockchainAddress) {
                     this.wallet.data.balance -= transaction.payload.unitsToTransfer + transaction.payload.networkFee;
+                    this.wallet.data.transactions.push(transaction);
                 }
 
                 if(transaction.payload.blockchainReceiverAddress == localBlockchainAddress) {
                     this.wallet.data.balance += transaction.payload.unitsToTransfer;
+                    this.wallet.data.transactions.push(transaction);
                 }
             }
 
