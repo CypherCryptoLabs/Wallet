@@ -33,6 +33,7 @@ export class Overview extends React.Component {
 
         return (
           <div className='bg-black min-h-screen min-w-screen text-white font-black'>
+            <Link to="/settings" className='text-xl bg-secondary p-0 px-2 leading-9 rounded-full h-9 text-center hover:scale-110 duration-300 mt-4 right-3 absolute'>Settings</Link>
             <h1 className='text-4xl text-gradient m-auto pt-10'>Balance:</h1>
             <h2 className='m-auto text-2xl'>{this.state.balance} Cypher</h2>
             <div className='m-auto flex flex-wrapt space-x-10 mt-10'>
