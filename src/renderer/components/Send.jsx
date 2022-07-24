@@ -32,11 +32,11 @@ export class Send extends React.Component {
             <h1 className='text-4xl text-gradient m-auto pt-10'>Send Cypher</h1>
 
             {this.state.transactionSuccess === true &&
-              <p>Successfully sent</p>
+              <p className='text-center mt-4 border-2 border-green-400 rounded-xl w-9/12 m-auto bg-green-400/20'>Successfully sent</p>
             }
 
             {this.state.transactionSuccess === false &&
-              <p>An Error occured while sending the Transaction</p>
+              <p className='text-center mt-4 border-2 border-red-800 rounded-xl w-9/12 m-auto bg-red-800/20'>An Error occured while sending the Transaction</p>
             }
 
             {this.state.transactionSuccess === undefined &&
