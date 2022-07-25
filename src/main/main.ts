@@ -18,7 +18,8 @@ import { resolveHtmlPath } from './util';
 const Wallet = require('./classes/wallet');
 const wallet = new Wallet();
 const Networking = require('./classes/networking');
-const networking = new Networking('192.168.178.39', 1234, wallet);
+const networking = new Networking(wallet.data.nodeAddress, wallet.data.nodePort, wallet);
+console.log(wallet)
 
 class AppUpdater {
   constructor() {
@@ -50,6 +51,21 @@ ipcMain.handle("sync-to-network", async (_event, _arg) => {
 
 ipcMain.handle("get-transaction-history", async (_event, _arg) => {
   return wallet.transactionHistory;
+})
+
+ipcMain.handle("update-settings", async (_event, settingsObj) => {
+  networking.nodeAddress = settingsObj.address;
+  networking.nodePort = parseInt(settingsObj.port);
+
+  wallet.data.nodeAddress = settingsObj.address;
+  wallet.data.nodePort = parseInt(settingsObj.port);
+
+  wallet.data = wallet.data
+  return;
+})
+
+ipcMain.handle("load-settings", async (_event, _arg) => {
+  return {address: wallet.data.nodeAddress, port: wallet.data.nodePort};
 })
 
 if (process.env.NODE_ENV === 'production') {

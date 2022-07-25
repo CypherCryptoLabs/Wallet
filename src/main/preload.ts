@@ -29,6 +29,12 @@ contextBridge.exposeInMainWorld('electron', {
     },
     getTransactionHistory() {
       return Promise.resolve(ipcRenderer.invoke("get-transaction-history"));
+    },
+    updateSettings(data: object) {
+      return Promise.resolve(ipcRenderer.invoke("update-settings", data));
+    },
+    loadSettings() {
+      return Promise.resolve(ipcRenderer.invoke("load-settings"));
     }
   },
 });
