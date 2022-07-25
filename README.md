@@ -27,7 +27,7 @@ If your Pull Request does not contain one of these, it will be rejected. If you 
 
 ## First Release
 - [x] List of transactions in the Overview
-- [ ] Configurable Node (selecting other Node to connect to and pull Data ffrom)
+- [x] Configurable Node (selecting other Node to connect to and pull Data ffrom)
 
 # License
 MIT License
