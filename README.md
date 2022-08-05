@@ -14,13 +14,7 @@ The Cypher Project does not stop with providing this decentralized infrastructur
 This repository contains the source code for the official Cypher Wallet Application, written in JavaScript/TypeScript with Electron, ReactJS and TailwindCSS.
 
 # Contribute
-Contributing to the Cypher Project should be as easy as possible, which is why we use GitHub Pull Requests.There are only 2 rules.
-
-1. Your Pull Requests contains a bug-fix
-2. Your Pull Requests completes one of the goals in the TODO list
-
-If your Pull Request does not contain one of these, it will be rejected. If you want to suggest an improvement, you can open a new Issue.
-
+If you want to suggest a feature, or change, please create an Issue, then create a Pull Request, and after a reviwe, you will either receive feedback, or your Pull Request will be merged.
 
 # TODO
 
