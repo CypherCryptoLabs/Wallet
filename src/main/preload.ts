@@ -35,6 +35,9 @@ contextBridge.exposeInMainWorld('electron', {
     },
     loadSettings() {
       return Promise.resolve(ipcRenderer.invoke("load-settings"));
+    },
+    deleteCahe() {
+      return Promise.resolve(ipcRenderer.invoke("delete-cache"));
     }
   },
 });

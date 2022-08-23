@@ -68,6 +68,14 @@ ipcMain.handle("load-settings", async (_event, _arg) => {
   return {address: wallet.data.nodeAddress, port: wallet.data.nodePort};
 })
 
+ipcMain.handle("delete-cache", async (_event, _arg) => {
+  wallet.data.balance = 0;
+  wallet.data.blockHeight = -1;
+  wallet.data.transactions = [];
+
+  wallet.data = wallet.data
+})
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();

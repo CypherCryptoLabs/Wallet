@@ -25,7 +25,11 @@ export class Settings extends React.Component {
 
     async sendUpdateSettings() {
         console.log(this.state);
-        window.electron.ipcRenderer.updateSettings(this.state);    
+        window.electron.ipcRenderer.updateSettings(this.state);
+    }
+
+    async sendDeleteCache() {
+        window.electron.ipcRenderer.deleteCahe();
     }
   
     render() {
@@ -37,6 +41,10 @@ export class Settings extends React.Component {
                     <input className='m-auto bg-secondary rounded-xl h-10 text-center mt-4 w-44' placeholder="Address" name='address' onChange={this.onChange} value={this.state.address}></input><p className='inline'>:</p>
                     <input className='m-auto bg-secondary rounded-xl h-10 text-center mt-4 w-16' placeholder="Port" type="number" step="0.001" name='port' onChange={this.onChange} min="0" max="65535" value={this.state.port}></input><br />
                     <button className='text-xl bg-secondary px-3 py-2 rounded-xl w-40 text-center hover:scale-110 duration-300 m-auto mt-5 block' onClick={this.sendUpdateSettings}>Save</button>
+                </div>
+                <h1 className='text-4xl text-gradient pt-10 m-auto'>Cache:</h1>
+                <div className='m-auto'>
+                    <button className='text-xl bg-secondary px-3 py-2 rounded-xl w-40 text-center hover:scale-110 duration-300 m-auto mt-5 block' onClick={this.sendDeleteCache}>Delete Cache</button>
                 </div>
           </div>
         )
