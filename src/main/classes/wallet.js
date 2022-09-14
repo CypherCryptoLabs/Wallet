@@ -12,6 +12,9 @@ class Wallet {
 
     loadWalletData() {
         try {
+            if(!fs.existsSync(app.getPath("appData") + "/cypher-wallet/"))
+                fs.mkdirSync(app.getPath("appData") + "/cypher-wallet/")
+            
             if(!fs.existsSync(app.getPath("appData") + "/cypher-wallet/wallet.json")) {
                 this.crypto = new Crypto();
                 this.data = {balance:0, blockHeight: -1, transactions:[], privateKey: this.crypto.privateKey, blockchainAddress: this.crypto.blockchainAddress, nodeAddress: "127.0.0.1", nodePort: 1234};
