@@ -17,7 +17,7 @@ class Wallet {
             
             if(!fs.existsSync(app.getPath("appData") + "/cypher-wallet/wallet.json")) {
                 this.crypto = new Crypto();
-                this.data = {balance:0, blockHeight: -1, transactions:[], privateKey: this.crypto.privateKey, blockchainAddress: this.crypto.blockchainAddress, nodeAddress: "127.0.0.1", nodePort: 1234};
+                this.data = {balance:0, blockHeight: -1, transactions:[], privateKey: this.crypto.privateKey, blockchainAddress: this.crypto.blockchainAddress, nodeAddress: "127.0.0.1", nodePort: 1234, chats: {}};
             } else {
                 this._data = JSON.parse(fs.readFileSync(app.getPath("appData") + "/cypher-wallet/wallet.json").toString("utf8"));
                 console.log(this._data)

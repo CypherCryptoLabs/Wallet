@@ -5,6 +5,7 @@ import { Receive } from './components/Receive';
 import { Send } from './components/Send';
 import { Settings } from './components/Settings';
 import { Messenger } from './components/Messenger';
+import { CreateChat } from './components/CreateChat';
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/send" element={<Send />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/messenger" element={<Messenger />} />
+        <Route path="/messenger/create" element={<CreateChat />} />
       </Routes>
     </Router>
   );

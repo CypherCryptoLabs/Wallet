@@ -76,6 +76,16 @@ ipcMain.handle("delete-cache", async (_event, _arg) => {
   wallet.data = wallet.data
 })
 
+ipcMain.handle("get-chats", async (_event, _arg) => {
+  return wallet.data.chats;
+})
+
+ipcMain.handle("create-chat", async (_event, address) => {
+  wallet.data.chats[address] = []
+  wallet.data = wallet.data
+  return;
+})
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();

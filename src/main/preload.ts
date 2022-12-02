@@ -38,6 +38,12 @@ contextBridge.exposeInMainWorld('electron', {
     },
     deleteCahe() {
       return Promise.resolve(ipcRenderer.invoke("delete-cache"));
+    },
+    getChats() {
+      return Promise.resolve(ipcRenderer.invoke("get-chats"));
+    },
+    createChat(address : string) {
+      return Promise.resolve(ipcRenderer.invoke("create-chat", address));
     }
   },
 });
