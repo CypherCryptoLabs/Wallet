@@ -15,7 +15,7 @@ export class Messenger extends React.Component {
     render() {
         return (
             <>
-                <div className='bg-black min-h-screen min-w-screen text-white font-black'>
+                <div className='bg-black min-h-screen min-w-screen text-white font-black pt-4'>
                     <ChatSelector></ChatSelector>
                 </div>
                 <Menu></Menu>
