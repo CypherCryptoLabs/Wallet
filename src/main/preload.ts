@@ -44,6 +44,9 @@ contextBridge.exposeInMainWorld('electron', {
     },
     createChat(address : string) {
       return Promise.resolve(ipcRenderer.invoke("create-chat", address));
+    },
+    getMessages(address: string) {
+      return Promise.resolve(ipcRenderer.invoke("get-messages", address));
     }
   },
 });
