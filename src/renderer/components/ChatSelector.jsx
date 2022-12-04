@@ -30,7 +30,7 @@ export class ChatSelector extends React.Component {
                             Object.keys(chats).map((key, val) => {
                                 let lastMessage = chats[key].length - 1 ;
                                 return (
-                                    <Link to={{pathname: "/messenger/chat", state: {key: key}}} key={key} className="bg-secondary rounded-xl max-w-[90%] overflow-hidden m-auto h-20 flex flex-wrapt mb-4">
+                                    <Link to="/messenger/chat" state={{key: key}} key={key} className="bg-secondary rounded-xl max-w-[90%] overflow-hidden m-auto h-20 flex flex-wrapt mb-4">
                                         <img src='https://cyphercrypto.io/resources/img/cypher-coin.svg' className='max-h-[80%] m-auto ml-2'/>
                                         <div className='mt-2'>
                                             <p className='truncate block overflow-hidden ml-5 max-w-[60%] min-w-[60%]'>{key}</p>
