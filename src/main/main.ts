@@ -91,7 +91,7 @@ ipcMain.handle("get-messages", async (_event, address) => {
 })
 
 ipcMain.handle("send-chat", async (_event, args) => {
-  console.log(args[1])
+  networking.sendMessage(args[0], args[1])
   return;
 })
 

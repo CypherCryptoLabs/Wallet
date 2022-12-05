@@ -27,6 +27,11 @@ class Crypto {
     sign(packet) {
         return Ecdsa.sign(packet, this._privateKey).toBase64();
     }
+
+    hash(data) {
+        return crypto.createHash('sha256').update(data).digest('hex')
+     }
+  
 }
 
 module.exports = Crypto;

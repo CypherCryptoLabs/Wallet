@@ -1,4 +1,5 @@
 const net = require('net');
+const BigNumber = require('bignumber.js');
 
 class Networking {
   constructor(nodeAddress, nodePort, walletInstance) {
@@ -126,6 +127,66 @@ class Networking {
 
     await receivedResponsePromise;
     return response;
+  }
+
+  async getNodeList() {
+    let packet = this.createPacket(11, {});
+    let nodeList = JSON.parse(await this.sendPacket(packet, this.nodeAddress, this.nodePort)).payload.nodeList;
+
+    return nodeList;
+  }
+
+  async sendMessage(address, message) {
+    var nodeList = await this.getNodeList();
+    let seedTimestamp = Date.now()
+    let seed = this.wallet.crypto.hash(this.wallet.data.blockchainAddress + (seedTimestamp - (seedTimestamp % 14400000)) + address)
+    nodeList.push({blockchainAddress: seed})
+
+    let addressList = nodeList.map(function(e) {return e.blockchainAddress}).sort((a, b) => {
+      let bigNumA = new BigNumber(a, 16)
+      let bigNumB = new BigNumber(b, 16)
+
+      if (bigNumA.isGreaterThanOrEqualTo(bigNumB)) {
+          return 1;
+      } else {
+          return -1
+      }
+    });
+
+    let fakeNodeIndex = addressList.indexOf(seed);
+    var nodeToUse;
+    if(fakeNodeIndex == 0) {
+      nodeToUse = addressList[1]
+    } else if(fakeNodeIndex == addressList.length - 1) {
+      nodeToUse = addressList[fakeNodeIndex - 1]
+    } else {
+      let seedBigNum = new BigNumber(seed, 16)
+      var differenceBiggerAddress = new BigNumber(addressList[fakeNodeIndex + 1].blockchainAddress, 16)
+      var differenceSmallerAddress = new BigNumber(addressList[fakeNodeIndex - 1].blockchainAddress, 16)
+
+      if(new BigNumber(differenceBiggerAddress.toString(16), 16).lt(new BigNumber(differenceSmallerAddress.toString(16), 16))) {
+        nodeToUse = addressList[fakeNodeIndex - 1]
+      } else {
+        nodeToUse = addressList[fakeNodeIndex + 1]
+      }
+    }
+
+    let nodeIndex = nodeList.map(function(e) {return e.blockchainAddress}).indexOf(nodeToUse);
+    let node = nodeList[nodeIndex];
+
+    let messagePacket = this.createPacket(8,
+      {
+        type:"send",
+        blockchainReceiverAddress: address,
+        message: message
+      }
+    )
+
+    this.wallet.data.chats[address].push({message:message})
+    this.wallet.data = this.wallet.data
+
+    this.sendPacket(messagePacket, node.ipAddress, node.port)
+
   }
 }
 
