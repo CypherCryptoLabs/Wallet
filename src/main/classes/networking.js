@@ -139,10 +139,10 @@ class Networking {
   async sendMessage(address, message) {
     var nodeList = await this.getNodeList();
     let seedTimestamp = Date.now()
-    let seed = this.wallet.crypto.hash(this.wallet.data.blockchainAddress + (seedTimestamp - (seedTimestamp % 14400000)) + address)
-    nodeList.push({blockchainAddress: seed})
+    let seed = this.wallet.crypto.hash(this.wallet.data.blockchainAddress + (seedTimestamp - (seedTimestamp % 3600000)) + address)
+    nodeList.push({blockchainAddress: seed, registrationTimestamp: 0})
 
-    let addressList = nodeList.map(function(e) {return e.blockchainAddress}).sort((a, b) => {
+    let addressList = nodeList.filter(obj => obj.registrationTimestamp < (seedTimestamp - (seedTimestamp % 3600000))).map(function(e) {return e.blockchainAddress}).sort((a, b) => {
       let bigNumA = new BigNumber(a, 16)
       let bigNumB = new BigNumber(b, 16)
 
