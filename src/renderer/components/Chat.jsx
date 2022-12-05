@@ -16,10 +16,13 @@ class ChatComponent extends React.Component {
         super(props)
         this.address = props.address
         this.loadMessages = this.loadMessages.bind(this)
+        this.onChange = this.onChange.bind(this)
+        this.sendMessages = this.sendMessages.bind(this)
         this.timer = setInterval(this.loadMessages(), 100)
         this.state = {
             messages: [],
-            address: ""
+            address: "",
+            messageToSend: ""
         }
     }
 
@@ -37,22 +40,35 @@ class ChatComponent extends React.Component {
         this.setState({messages:await window.electron.ipcRenderer.getMessages(this.address)})
     }
 
+    async sendMessages() {
+        this.setState({messages:await window.electron.ipcRenderer.sendChat(this.address, this.state.messageToSend)})
+        this.setState({ messageToSend : "" });
+    }
+
+    async onChange(e){
+        this.setState({ messageToSend : e.target.value });
+        console.log(this.state.messageToSend)
+    }
+
     render() {
         let messages = []
-        for(var i = 0; i < this.state.messages.length; i++) {
-            let message = this.state.messages[i];
-            if(message.sender == this.state.address) {
-                messages.push(
-                    <div className='bg-secondary rounded-xl p-2 ml-auto'>
-                        <p>{message.message}</p>
-                    </div>
-                )
-            } else {
-                messages.push(
-                    <div className='bg-sky-400 rounded-xl p-2 mr-auto'>
-                        <p>{message.message}</p>
-                    </div>
-                )
+        console.log(this.state.messages)
+        if(this.state.messages != undefined) {
+            for(var i = 0; i < this.state.messages.length; i++) {
+                let message = this.state.messages[i];
+                if(message.sender == this.state.address) {
+                    messages.push(
+                        <div className='bg-secondary rounded-xl p-2 ml-auto' key={i}>
+                            <p>{message.message}</p>
+                        </div>
+                    )
+                } else {
+                    messages.push(
+                        <div className='bg-sky-400 rounded-xl p-2 mr-auto' key={i}>
+                            <p>{message.message}</p>
+                        </div>
+                    )
+                }
             }
         }
 
@@ -66,8 +82,8 @@ class ChatComponent extends React.Component {
                         messages
                     }
                 </div>
-                <textarea className='absolute bottom-[1%] left-[1%] w-[78%] bg-secondary rounded-xl h-10' type="textarea"/>
-                <button className='absolute bottom-[1%] right-[1%] w-[18%] bg-secondary rounded-xl h-10'>Send</button>
+                <textarea className='absolute bottom-[1%] left-[1%] w-[78%] bg-secondary rounded-xl h-10' type="textarea" name='message' onChange={this.onChange} value={this.state.messageToSend} />
+                <button className='absolute bottom-[1%] right-[1%] w-[18%] bg-secondary rounded-xl h-10' onClick={this.sendMessages}>Send</button>
             </>
         );
     }

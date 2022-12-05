@@ -90,6 +90,11 @@ ipcMain.handle("get-messages", async (_event, address) => {
   return wallet.data.chats[address];
 })
 
+ipcMain.handle("send-chat", async (_event, args) => {
+  console.log(args[1])
+  return;
+})
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
