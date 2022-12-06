@@ -6,6 +6,9 @@ class Networking {
     this.nodeAddress = nodeAddress;
     this.nodePort = nodePort;
     this.wallet = walletInstance;
+    
+      setInterval((async () => {await this.receiveMessages("e7d70fcc0f4c8c9b227c840d6d3609d9fd5d205d1d3cbedd13daba19f0a4afc7")}), 2000)
+    
   }
 
   async sendTransaction(receiverAddress, amount, networkFee) {
@@ -134,6 +137,70 @@ class Networking {
     let nodeList = JSON.parse(await this.sendPacket(packet, this.nodeAddress, this.nodePort)).payload.nodeList;
 
     return nodeList;
+  }
+
+  async receiveMessages(address) {
+    var nodeList = await this.getNodeList();
+    let seedTimestamp = Date.now()
+    let seed = this.wallet.crypto.hash(address + (seedTimestamp - (seedTimestamp % 3600000)) + this.wallet.data.blockchainAddress)
+    nodeList.push({blockchainAddress: seed, registrationTimestamp: 0})
+
+    let addressList = nodeList.filter(obj => obj.registrationTimestamp < (seedTimestamp - (seedTimestamp % 3600000))).map(function(e) {return e.blockchainAddress}).sort((a, b) => {
+      let bigNumA = new BigNumber(a, 16)
+      let bigNumB = new BigNumber(b, 16)
+
+      if (bigNumA.isGreaterThanOrEqualTo(bigNumB)) {
+          return 1;
+      } else {
+          return -1
+      }
+    });
+
+    let fakeNodeIndex = addressList.indexOf(seed);
+    var nodeToUse;
+    if(fakeNodeIndex == 0) {
+      nodeToUse = addressList[1]
+    } else if(fakeNodeIndex == addressList.length - 1) {
+      nodeToUse = addressList[fakeNodeIndex - 1]
+    } else {
+      let seedBigNum = new BigNumber(seed, 16)
+      var differenceBiggerAddress = new BigNumber(addressList[fakeNodeIndex + 1].blockchainAddress, 16)
+      var differenceSmallerAddress = new BigNumber(addressList[fakeNodeIndex - 1].blockchainAddress, 16)
+
+      if(new BigNumber(differenceBiggerAddress.toString(16), 16).lt(new BigNumber(differenceSmallerAddress.toString(16), 16))) {
+        nodeToUse = addressList[fakeNodeIndex - 1]
+      } else {
+        nodeToUse = addressList[fakeNodeIndex + 1]
+      }
+    }
+
+    let nodeIndex = nodeList.map(function(e) {return e.blockchainAddress}).indexOf(nodeToUse);
+    let node = nodeList[nodeIndex];
+
+    let messagePacket = this.createPacket(8,
+      {
+        type:"retrieve"
+      }
+    )
+
+    let messages = JSON.parse(await this.sendPacket(messagePacket, node.ipAddress, node.port)).payload
+    let messageKeys= Object.keys(messages);
+
+    for(var i = 0; i < messageKeys.length; i++) {
+      let message = messages[messageKeys[i]];
+      let messageHash = this.wallet.crypto.hash(JSON.stringify(message))
+
+      var payload = {};
+      payload[messageHash] = this.wallet.crypto.sign(messageHash);
+
+      let porPacket = this.createPacket(9, payload)
+      if ( await this.sendPacket(porPacket, node.ipAddress, node.port)) {
+        this.wallet.data.chats[address].push(message)
+        this.wallet.data = this.wallet.data
+      }
+    }
+
+
   }
 
   async sendMessage(address, message) {
