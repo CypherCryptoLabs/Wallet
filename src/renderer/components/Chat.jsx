@@ -62,7 +62,7 @@ class ChatComponent extends React.Component {
         if(this.state.messages != undefined) {
             for(var i = 0; i < this.state.messages.length; i++) {
                 let message = this.state.messages[i];
-                if(message.sender == this.state.address) {
+                if(message.sender == this.state.address || message.sender == undefined) {
                     messages.push(
                         <div className='bg-secondary rounded-xl p-2 ml-auto mb-2 max-w-[80%] break-words' key={i}>
                             <p className='whitespace-pre-wrap break-words max-w-[100%]'>{message.message}</p>
